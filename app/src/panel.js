@@ -20,7 +20,7 @@ function Panel(props) {
                 height: '100%',
                 width: '100%',
                 '&:hover': {
-                  boxShadow: 'inset 0 0 100px 100px rgba(255, 255, 255, 0.5)'
+                  filter: 'brightness(150%)'
                 }
               }}>
                 <Heading>{button.title}</Heading>

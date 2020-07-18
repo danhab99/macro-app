@@ -1,8 +1,16 @@
-import Sidebar from "react-sidebar";
-import React from 'react'
+import React from "react";
+import { Box } from 'theme-ui'
 
 export default function SidebarContent(props) {
   return (
-    <p>Sidebar content</p>
+    <Box
+      sx={{
+        minWidth: "200px",
+        height: "100vh",
+        bg: "backgroundLight",
+      }}
+    >
+
+    </Box>
   );
-};
+}

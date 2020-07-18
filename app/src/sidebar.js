@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, NavLink, Input } from 'theme-ui'
+/** @jsx jsx */
+import { jsx, Box, NavLink, Input } from 'theme-ui'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { changeColumns } from './redux'
@@ -17,13 +18,17 @@ function SidebarContent(props) {
       <Input 
         defaultValue={4}
         type="number"
-        onChange={e => changeColumns(parseInt(e.target.value))}   
+        onChange={e => changeColumns(parseInt(e.target.value))}
+        min={1}
       />
 
       {props.categories.map(category => {
         return (<Box p={2}>
-          <NavLink variant="nav">
-            <Link to={`/${category}`}>{category}</Link>
+          <NavLink sx={{
+            fontSize: 5,
+            color: 'text !important'
+          }}>
+            <Link to={`/${category}`} sx={{variant: 'styles.a'}} >{category}</Link>
           </NavLink>
         </Box>)
       })}

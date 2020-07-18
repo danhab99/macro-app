@@ -1,21 +1,17 @@
-import React from 'react';
-import Sidebar from "react-sidebar"
+import React from "react";
+import Sidebar from "react-sidebar";
 
-import { ThemeProvider, Heading, MenuButton } from 'theme-ui'
-import { Provider as ReduxProvider } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom"
-import { ToastContainer, toast } from 'react-toastify'
+import { ThemeProvider, Heading, MenuButton } from "theme-ui";
+import { connect } from "react-redux";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
-import theme from './theme/theme'
-import store from './redux'
+import theme from "./theme/theme";
 
-import SidebarContent from './sidebar'
+import SidebarContent from "./sidebar";
+import Panel from './panel'
 
-const mql = window.matchMedia(`(min-width: 800px)`)
+const mql = window.matchMedia(`(min-width: 800px)`);
 
 class App extends React.Component {
   constructor(props) {
@@ -49,42 +45,48 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <ReduxProvider store={store}>
-          <ThemeProvider theme={theme}>
-            <Sidebar
-              sidebar={<SidebarContent />}
-              open={this.state.sidebarOpen}
-              docked={this.state.sidebarDocked}
-              onSetOpen={this.onSetSidebarOpen}
-            >
-              <ToastContainer
-                position="top-right"
-                autoClose={1000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
+        <ThemeProvider theme={theme}>
+          <Sidebar
+            sidebar={<SidebarContent />}
+            open={this.state.sidebarOpen}
+            docked={this.state.sidebarDocked}
+            onSetOpen={this.onSetSidebarOpen}
+          >
+            <ToastContainer
+              position="top-right"
+              autoClose={1000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+            <Heading>
+              <MenuButton
+                sx={{
+                  display: this.state.sidebarDocked ? "none" : "block",
+                  position: "fixed",
+                }}
+                onClick={() => this.onSetSidebarOpen(true)}
               />
-              <Heading>
-                <MenuButton
-                  sx={{
-                    display: this.state.sidebarDocked ? "none" : "block",
-                    position: "fixed",
-                  }}
-                  onClick={() => this.onSetSidebarOpen(true)}
-                />
-              </Heading>
-            </Sidebar>
-          </ThemeProvider>
-        </ReduxProvider>
+            </Heading>
+
+            <Switch>
+              <Route path="/:category" children={<Panel />} />
+            </Switch>
+          </Sidebar>
+        </ThemeProvider>
       </Router>
     );
   }
 }
 
-export default App;
+function mapStateToProps(store) {
+  return {
+    buttons: store.buttonsState.buttons,
+  };
+}
 
-/*  */
+export default connect(mapStateToProps)(App);

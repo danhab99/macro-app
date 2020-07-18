@@ -11,7 +11,7 @@ function Panel(props) {
 
   if (buttons) {
     return (
-      <Grid columns={4} gap={4}>
+      <Grid columns={props.columns} gap={4}>
         {buttons.map(button => {
           return (<Box>
             <AspectRatio ratio={1}>
@@ -38,7 +38,8 @@ function Panel(props) {
 
 function mapStateToProps(store) {
   return {
-    categories: store.categoriesState.categories
+    categories: store.categoriesState.categories,
+    columns: store.appState.columns
   }
 }
 

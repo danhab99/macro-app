@@ -5,20 +5,20 @@ const ACTIONS = {
   LOAD_BUTTONS: Symbol()
 }
 
-const buttonsReducer = (state, action) => {
+const categoriesReducer = (state, action) => {
   let newState = Object.assign({
-    buttons: {}
+    categories: {}
   }, state)
 
   if (action.type === ACTIONS.LOAD_BUTTONS) {
-    newState.buttons = action.buttons
+    newState.categories = action.categories
   }
 
   return newState
 }
 
 const reducers = combineReducers({
-  buttonsState: buttonsReducer
+  categoriesState: categoriesReducer
 })
 
 const middlewares = window.__REDUX_DEVTOOLS_EXTENSION__
@@ -29,9 +29,9 @@ const store = createStore(reducers, undefined, middlewares);
 
 export default store
 
-export function loadButtons(buttons) {
+export function loadButtons(categories) {
   return store.dispatch({
     type: ACTIONS.LOAD_BUTTONS,
-    buttons
+    categories
   })
 }

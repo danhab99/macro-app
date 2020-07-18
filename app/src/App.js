@@ -1,12 +1,13 @@
 import React from "react";
 import Sidebar from "react-sidebar";
 
-import { ThemeProvider, Heading, MenuButton } from "theme-ui";
+import { ThemeProvider, Heading, MenuButton, Box } from "theme-ui";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import theme from "./theme/theme";
+import { loadButtons } from './redux'
 
 import SidebarContent from "./sidebar";
 import Panel from './panel'
@@ -24,6 +25,9 @@ class App extends React.Component {
 
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+  }
+
+  componentDidMount() {
   }
 
   componentWillMount() {
@@ -72,10 +76,13 @@ class App extends React.Component {
                 onClick={() => this.onSetSidebarOpen(true)}
               />
             </Heading>
-
-            <Switch>
-              <Route path="/:category" children={<Panel />} />
-            </Switch>
+              
+            <Box p={4}>
+              <Switch>
+                <Route path="/:category" children={<Panel />} />
+              </Switch>
+            </Box>
+            
           </Sidebar>
         </ThemeProvider>
       </Router>
@@ -85,7 +92,7 @@ class App extends React.Component {
 
 function mapStateToProps(store) {
   return {
-    buttons: store.buttonsState.buttons,
+    categories: store.categoriesState,
   };
 }
 

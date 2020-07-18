@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from "react-sidebar"
 
-import { ThemeProvider } from 'theme-ui'
+import { ThemeProvider, Heading, MenuButton } from 'theme-ui'
 import { Provider as ReduxProvider } from 'react-redux'
 import {
   BrowserRouter as Router,

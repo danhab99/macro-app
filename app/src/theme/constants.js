@@ -47,11 +47,7 @@ export default {
     text: '#fff',
     background: '#100e0e',
     backgroundLight: '#1f1b1b',
-    backgroundDark: '#0d0b0b',
     primary: '#ff7070',
-    secondary: '#2B7E7E',
-    accent: '#99C542',
-    muted: '#666'
   },
   shadows: {
     default: '11px 11px rgba(0,0,0,0)',

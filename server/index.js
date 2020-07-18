@@ -47,7 +47,7 @@ wss.on('connection', ws => {
         break
       case 'click':
         console.log('Clicking')
-        let cmd = config[msg.category][msg.index].cmd
+        let cmd = config[msg.data.category][msg.data.index].cmd
         exec(cmd)
         break
       default:

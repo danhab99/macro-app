@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { Grid, Box, Button, Text, AspectRatio, Heading, Divider } from "theme-ui";
+import { clickButton } from './redux'
 
 function Panel(props) {
   let { category } = useParams();
@@ -13,7 +14,7 @@ function Panel(props) {
         <Heading as="h1">{category}</Heading>
         <Divider />
         <Grid columns={props.columns} gap={2}>
-          {buttons.map((button) => {
+          {buttons.map((button, i) => {
             return (
               <Box>
                 <AspectRatio ratio={1}>
@@ -27,6 +28,8 @@ function Panel(props) {
                         filter: "brightness(150%)",
                       },
                     }}
+
+                    onClick={() => clickButton(category, i)}
                   >
                     <Heading>{button.title}</Heading>
                   </Button>

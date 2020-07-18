@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import theme from "./theme/theme";
-import { loadButtons } from './redux'
+import { loadButtons, subToButtonClick } from './redux'
 
 import SidebarContent from "./sidebar";
 import Panel from './panel'
@@ -28,6 +28,37 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this._ws = new WebSocket('ws://localhost:8080')
+
+    this._ws.onopen = () => {
+      this.send('get config')
+
+      subToButtonClick((act) => {
+        this.send('click', {
+          category: act.category,
+          index: act.index
+        })
+      })
+    }
+
+    this._ws.onmessage = msg => {
+      try {
+        msg = JSON.parse(msg.data)
+      }
+      catch (e) {
+        console.error(e)
+      }
+
+      switch (msg.topic) {
+        case 'config':
+          loadButtons(msg.data)
+          break
+      }
+    }
+  }
+
+  send(topic, data) {
+    this._ws.send(JSON.stringify({topic, data}))
   }
 
   componentWillMount() {

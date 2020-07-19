@@ -31,7 +31,7 @@ class App extends React.Component {
   componentDidMount() {
     // this._ws = new WebSocket(`ws://${window.location.host}`)
     let p = parseInt(window.location.port) + 1
-    this._ws = new WebSocket(`ws://localhost:${p}`)
+    this._ws = new WebSocket(`ws://${window.location.hostname}:${p}`)
 
     this._ws.onopen = () => {
       this.send('get config')

@@ -3,7 +3,7 @@ import Sidebar from "react-sidebar";
 
 import { ThemeProvider, Heading, MenuButton, Box } from "theme-ui";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -122,6 +122,7 @@ class App extends React.Component {
             <Box p={4}>
               <Switch>
                 <Route path="/:category" children={<Panel />} />
+                <Redirect exact from="/" to="/Main" />
               </Switch>
             </Box>
             

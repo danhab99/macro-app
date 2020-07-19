@@ -24,6 +24,7 @@ function Panel(props) {
                       backgroundColor: button.color,
                       height: "100%",
                       width: "100%",
+                      borderRadius: '20px',
                       "&:hover": {
                         filter: "brightness(150%)",
                       },

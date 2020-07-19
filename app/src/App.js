@@ -5,6 +5,7 @@ import { ThemeProvider, Heading, MenuButton, Box } from "theme-ui";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 import theme from "./theme/theme";
 import { loadButtons, subToButtonClick } from './redux'
@@ -28,7 +29,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this._ws = new WebSocket('ws://localhost:8080')
+    this._ws = new WebSocket(`ws://${window.location.host}`)
 
     this._ws.onopen = () => {
       this.send('get config')
@@ -39,6 +40,13 @@ class App extends React.Component {
           index: act.index
         })
       })
+    }
+
+    this._ws.onclose = () => {
+      toast.warning('Reconnecting...')
+      setTimeout(() => {
+        this.componentDidMount()
+      }, 1000)
     }
 
     this._ws.onmessage = msg => {
@@ -52,6 +60,7 @@ class App extends React.Component {
       switch (msg.topic) {
         case 'config':
           loadButtons(msg.data)
+          toast.success('Updating config')
           break
       }
     }

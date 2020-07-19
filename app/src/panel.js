@@ -16,7 +16,7 @@ function Panel(props) {
         <Grid columns={props.columns} gap={2}>
           {buttons.map((button, i) => {
             return (
-              <Box>
+              <Box key={`${i}`}>
                 <AspectRatio ratio={1}>
                   <Button
                     variant="panel"

@@ -7,7 +7,12 @@ const express = require('express')
 const { join } = require('path')
 
 const api = express()
-api.use(express.static(join(__dirname, '../', 'app', 'build')))
+api.use(
+  express.static(join(__dirname, '../', 'app', 'build')),
+  (req, res) => {
+    res.redirect('/')
+  }
+  )
 
 program
   .option('-p --port <port>', 'Port to listen on', 8080)

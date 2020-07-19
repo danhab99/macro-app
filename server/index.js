@@ -3,6 +3,13 @@ const fs = require('fs')
 const EventEmitter = require('events')
 const { exec } = require('child_process')
 const { program } = require('commander')
+const express = require('express')
+const http = require('http')
+
+const api = express()
+const server = http.createServer(api)
+
+api.use(express.static('./build'))
 
 program
   .option('-p --port <port>', 'Port to listen on', 8080)
@@ -10,7 +17,7 @@ program
   .parse(process.argv)
 
 const wss = new WebSocket.Server({
-  port: program.port
+  server
 });
 
 var config = JSON.parse(fs.readFileSync(program.config))
@@ -21,8 +28,6 @@ fs.watchFile(program.config, (curr, prev) => {
   config = JSON.parse(fs.readFileSync(program.config))
   configEvents.emit('change', config)
 })
-
-wss.on('listening', () => console.log('Listening on port 8080...'))
 
 wss.on('connection', ws => {
   console.log('Client connected')
@@ -56,3 +61,5 @@ wss.on('connection', ws => {
     }
   })
 })
+
+server.listen(program.port, '0.0.0.0', () => console.log(`Listening on port ${program.port}`))

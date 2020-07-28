@@ -7,6 +7,7 @@ const { program } = require('commander')
 const express = require('express')
 const { join } = require('path')
 
+
 const api = express()
 api.use(
   express.static(join(__dirname, '../', 'app', 'build')),
@@ -22,18 +23,50 @@ program
 
 api.listen(program.port, '0.0.0.0', () => console.log(`Listening on port ${program.port}`))
 
+const readConfig = () => JSON.parse(fs.readFileSync(program.config))
+
+const validateConfig = config => {
+  for (let [key, value] of Object.entries(config)) {
+    if (typeof key !== 'string') {
+      throw new Error(`Key must be a string ${key}`, )
+    }
+
+    if (Array.isArray(value)) {
+      for (let item of value) {
+        ['title', 'color', 'cmd'].forEach(field => {
+          if (typeof item[field] !== 'string') {
+            throw new Error(`${field} must be a string ${item[field]}`)
+          }
+        })
+      }
+    }
+    else {
+      throw new Error(`Category value must be array ${key}`)
+    }
+  }
+
+  return config
+}
+
+var config = validateConfig(readConfig())
+var configEvents = new EventEmitter()
+
 const wss = new WebSocket.Server({
   port: program.port + 1
 });
 
-var config = JSON.parse(fs.readFileSync(program.config))
-var configEvents = new EventEmitter()
-
 fs.watchFile(program.config, (curr, prev) => {
   console.log('Config changed')
   try {
-    config = JSON.parse(fs.readFileSync(program.config))
-    configEvents.emit('change', config)
+    config = readConfig()
+    try {
+      validateConfig(config)
+      configEvents.emit('change', config)
+    }
+    catch (e) {
+      console.error(e)
+      configEvents.emit('error', e)
+    }
   }
   catch (e) {
     console.error(e)
@@ -47,6 +80,7 @@ wss.on('connection', ws => {
   const send = (topic, data) => ws.send(JSON.stringify({topic, data}))
 
   configEvents.on('change', config => send('config', config))
+  configEvents.on('error', e => send('error', e.message))
 
   ws.on('message', msg => {
     try {

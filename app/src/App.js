@@ -64,6 +64,10 @@ class App extends React.Component {
           loadButtons(msg.data)
           toast.success('Updating config')
           break
+        case 'error':
+          toast.error(msg.data, {
+            autoClose: 5000
+          })
       }
     }
   }
@@ -135,7 +139,7 @@ class App extends React.Component {
 
 function mapStateToProps(store) {
   return {
-    categories: store.categoriesState,
+    categories: store.categoriesState.categories,
   };
 }
 
